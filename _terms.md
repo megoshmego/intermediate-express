@@ -1,0 +1,1 @@
+given the terms you have just kindly provided, can you please create simple code snippets so i can learn syntax for the subject as quickly as possible? 
