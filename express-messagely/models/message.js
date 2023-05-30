@@ -1,7 +1,7 @@
 /** Message class for message.ly */
 
-const db = require("../db");
-const ExpressError = require("../expressError");
+import { query } from "../db";
+import ExpressError from "../expressError";
 
 
 /** Message on the site. */
@@ -13,7 +13,7 @@ class Message {
    */
 
   static async create({from_username, to_username, body}) {
-    const result = await db.query(
+    const result = await query(
         `INSERT INTO messages (
               from_username,
               to_username,
@@ -29,7 +29,7 @@ class Message {
   /** Update read_at for message */
 
   static async markRead(id) {
-    const result = await db.query(
+    const result = await query(
         `UPDATE messages
            SET read_at = current_timestamp
            WHERE id = $1
@@ -52,7 +52,7 @@ class Message {
    */
 
   static async get(id) {
-    const result = await db.query(
+    const result = await query(
         `SELECT m.id,
                 m.from_username,
                 f.first_name AS from_first_name,
@@ -99,4 +99,4 @@ class Message {
 }
 
 
-module.exports = Message;
+export default Message;

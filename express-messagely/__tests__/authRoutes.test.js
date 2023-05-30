@@ -1,18 +1,18 @@
- const request = require("supertest");
- const jwt = require("jsonwebtoken");
+ import request from "supertest";
+ import { decode } from "jsonwebtoken";
 
- const app = require("../app");
- const User = require("../models/user");
+ import app from "../app";
+ import { register } from "../models/user";
  const router = require('express').Router();
 
 
  describe("Auth Routes Test", function () {
 
    beforeEach(async function () {
-     await db.query("DELETE FROM messages");
-     await db.query("DELETE FROM users");
+     await query("DELETE FROM messages");
+     await query("DELETE FROM users");
 
-     let u1 = await User.register({
+     let u1 = await register({
        username: "test1",
        password: "password",
        first_name: "Test1",
@@ -36,7 +36,7 @@
          });
 
       let token = response.body.token;
-       expect(jwt.decode(token)).toEqual({
+       expect(decode(token)).toEqual({
          username: "bob",
          iat: expect.any(Number)
        });
@@ -52,7 +52,7 @@
          .send({ username: "test1", password: "password" });
 
        let token = response.body.token;
-       expect(jwt.decode(token)).toEqual({
+       expect(decode(token)).toEqual({
          username: "test1",
          iat: expect.any(Number)
        });
@@ -75,10 +75,10 @@
  });
 
 
-   const db = require('./db');
+   import { query, end } from './db';
 
 afterAll(() => {
-     return db.end();
+     return end();
    });
    
 
