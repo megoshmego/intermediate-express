@@ -1,61 +1,95 @@
-/** User class for message.ly */
-
-
-
-/** User of the site. */
+const db = require('../db');
+const bcrypt = require('bcrypt');
+const BCRYPT_WORK_FACTOR = 10;  // adjust this as needed
 
 class User {
+  
+  static async register({ username, password, first_name, last_name, phone }) {
+    if (await User.userExists(username)) {
+      throw new Error(`User with username ${username} already exists`);
+    }
 
-  /** register new user -- returns
-   *    {username, password, first_name, last_name, phone}
-   */
+    const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
-  static async register({username, password, first_name, last_name, phone}) { }
+    const result = await db.query(
+      `INSERT INTO users (username, password, first_name, last_name, phone)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING username, password, first_name, last_name, phone`,
+      [username, hashedPassword, first_name, last_name, phone]
+    );
 
-  /** Authenticate: is this username/password valid? Returns boolean. */
+    return result.rows[0];
+  }
 
-  static async authenticate(username, password) { }
+  static async userExists(username) {
+    const result = await db.query(
+      `SELECT username
+       FROM users
+       WHERE username = $1`,
+      [username]
+    );
 
-  /** Update last_login_at for user */
+    return result.rows.length > 0;
+  }
 
-  static async updateLoginTimestamp(username) { }
+  static async authenticate(username, password) {
+    const result = await db.query(
+      `SELECT password
+       FROM users
+       WHERE username = $1`,
+      [username]
+    );
 
-  /** All: basic info on all users:
-   * [{username, first_name, last_name, phone}, ...] */
+    const user = result.rows[0];
 
-  static async all() { }
+    if (user) {
+      if (await bcrypt.compare(password, user.password)) {
+        return true;
+      }
+    }
+    
+    return false;
+  }
 
-  /** Get: get user by username
-   *
-   * returns {username,
-   *          first_name,
-   *          last_name,
-   *          phone,
-   *          join_at,
-   *          last_login_at } */
+  static async updateLoginTimestamp(username) {
+    const result = await db.query(
+      `UPDATE users
+       SET last_login_at = current_timestamp
+       WHERE username = $1
+       RETURNING username`,
+      [username]
+    );
 
-  static async get(username) { }
+    if (!result.rows[0]) {
+      throw new Error(`No such user: ${username}`);
+    }
+  }
 
-  /** Return messages from this user.
-   *
-   * [{id, to_user, body, sent_at, read_at}]
-   *
-   * where to_user is
-   *   {username, first_name, last_name, phone}
-   */
+  static async all() {
+    const result = await db.query(
+      `SELECT username, first_name, last_name, phone
+       FROM users`
+    );
 
-  static async messagesFrom(username) { }
+    return result.rows;
+  }
 
-  /** Return messages to this user.
-   *
-   * [{id, from_user, body, sent_at, read_at}]
-   *
-   * where from_user is
-   *   {username, first_name, last_name, phone}
-   */
+  static async get(username) {
+    const result = await db.query(
+      `SELECT username, first_name, last_name, phone, join_at, last_login_at
+       FROM users
+       WHERE username = $1`,
+      [username]
+    );
 
-  static async messagesTo(username) { }
+    if (!result.rows[0]) {
+      throw new Error(`No such user: ${username}`);
+    }
+
+    return result.rows[0];
+  }
+
+  // Implement methods `messagesFrom` and `messagesTo` based on your application requirements.
 }
-
 
 module.exports = User;
