@@ -1,6 +1,3 @@
-module.exports = router;
-
-
 router.post('/login', async function(req, res, next) {
   const {username, password} = req.body;
   if (await User.authenticate(username, password)) {
@@ -11,3 +8,5 @@ router.post('/login', async function(req, res, next) {
     throw new ExpressError("Invalid username/password", 400);
   }
 });
+
+module.exports = router;
