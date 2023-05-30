@@ -90,9 +90,6 @@ describe("Test Message class", function () {
 });
 
 
-
-  const db = require('./db');
-
 afterAll(() => {
     return db.end();
   });

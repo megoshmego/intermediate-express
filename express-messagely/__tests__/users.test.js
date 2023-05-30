@@ -138,8 +138,6 @@ describe("Test messages part of User class", function () {
 
 
 
-  const db = require('./db');
-
 afterAll(() => {
     return db.end();
   });
