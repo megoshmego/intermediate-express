@@ -132,7 +132,7 @@ class User {
     return result.rows;
   }
 
-  ...
+
 
   // Implement methods `messagesFrom` and `messagesTo` based on your application requirements.
 }
