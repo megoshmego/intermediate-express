@@ -3,47 +3,44 @@ const User = require('../models/user');
 const Message = require('../models/message');
 const Router = express.Router();
 
-
-Router.get('/:users', async function(req, res, next) {
+Router.get('/', async function(req, res, next) {
     try {
-        const message = await User.getUserById(req.params.id);
-        
-        if (req.user.username !== username.user) {
-            throw new Error('not a user');
-        }
+        const users = await User.getAllUsers();
+
+        res.json({users: users});
+    } catch (error) {
+        next(error);
     }
-})
-/** GET / - get list of users.
- *
- * => {users: [{username, first_name, last_name, phone}, ...]}
- *
- **/
+});
 
+Router.get('/:username', async function(req, res, next) {
+    try {
+        const user = await User.getUserByUsername(req.params.username);
 
-/** GET /:username - get detail of users.
- *
- * => {user: {username, first_name, last_name, phone, join_at, last_login_at}}
- *
- **/
+        res.json({user: user});
+    } catch (error) {
+        next(error);
+    }
+});
 
+Router.get('/:username/to', async function(req, res, next) {
+    try {
+        const messages = await Message.getMessagesTo(req.params.username);
 
-/** GET /:username/to - get messages to user
- *
- * => {messages: [{id,
- *                 body,
- *                 sent_at,
- *                 read_at,
- *                 from_user: {username, first_name, last_name, phone}}, ...]}
- *
- **/
+        res.json({messages: messages});
+    } catch (error) {
+        next(error);
+    }
+});
 
+Router.get('/:username/from', async function(req, res, next) {
+    try {
+        const messages = await Message.getMessagesFrom(req.params.username);
 
-/** GET /:username/from - get messages from user
- *
- * => {messages: [{id,
- *                 body,
- *                 sent_at,
- *                 read_at,
- *                 to_user: {username, first_name, last_name, phone}}, ...]}
- *
- **/
+        res.json({messages: messages});
+    } catch (error) {
+        next(error);
+    }
+});
+
+module.exports = Router;
