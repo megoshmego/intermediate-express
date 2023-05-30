@@ -92,7 +92,7 @@ class User {
 
   // User.js
 
-  ...
+
 
   static async messagesFrom(username) {
     const result = await db.query(
