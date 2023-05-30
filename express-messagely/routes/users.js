@@ -1,3 +1,18 @@
+const express = require('express');
+const User = require('../models/user');
+const Message = require('../models/message');
+const Router = express.Router();
+
+
+Router.get('/:users', async function(req, res, next) {
+    try {
+        const message = await User.getUserById(req.params.id);
+        
+        if (req.user.username !== username.user) {
+            throw new Error('not a user');
+        }
+    }
+})
 /** GET / - get list of users.
  *
  * => {users: [{username, first_name, last_name, phone}, ...]}
