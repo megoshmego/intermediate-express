@@ -136,8 +136,7 @@ describe("Test messages part of User class", function () {
   });
 });
 
-afterAll(async function() {
-  await db.end();
+
 
   const db = require('./db');
 

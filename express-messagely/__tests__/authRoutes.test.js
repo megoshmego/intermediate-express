@@ -75,8 +75,6 @@
    });
  });
 
- afterAll(async function () {
-   await db.end();
 
    const db = require('./db');
 
