@@ -1,15 +1,17 @@
 Here are the terms and definitions extracted from the script:
 
+
 1. Mocking: Creating a simulated or fake version of a dependency or behavior during testing to isolate specific functionality and eliminate unpredictability or external dependencies.
-2. Unit testing: Testing individual units or components of code to ensure their functionality in isolation.
-3. External tools/libraries: Third-party tools or libraries used in an application that may introduce dependencies or randomness.
-4. Jest: A popular JavaScript testing framework commonly used for unit testing, providing built-in mocking capabilities.
-5. Mock function: A function created using Jest's `jest.fn()` that can be controlled and monitored during testing.
-6. Mock object: An object returned by `jest.fn()` that provides additional properties and methods to track calls, arguments, and other interactions with the mocked function.
-7. `mock.calls`: A property of the mock object that contains an array of all the calls made to the mocked function, including the arguments passed in each call.
-8. `expect().toHaveBeenCalled()`: A Jest matcher used to verify whether a mocked function has been called at least once.
-9. `expect().toHaveBeenCalledTimes()`: A Jest matcher used to verify the exact number of times a mocked function has been called.
-10. `jest.mock()`: A Jest function used to mock dependencies, such as external APIs or libraries, and define their behavior during testing.
+2. 
+3. Unit testing: Testing individual units or components of code to ensure their functionality in isolation.
+4. External tools/libraries: Third-party tools or libraries used in an application that may introduce dependencies or randomness.
+5. Jest: A popular JavaScript testing framework commonly used for unit testing, providing built-in mocking capabilities.
+6. Mock function: A function created using Jest's `jest.fn()` that can be controlled and monitored during testing.
+7. Mock object: An object returned by `jest.fn()` that provides additional properties and methods to track calls, arguments, and other interactions with the mocked function.
+8. `mock.calls`: A property of the mock object that contains an array of all the calls made to the mocked function, including the arguments passed in each call.
+9. `expect().toHaveBeenCalled()`: A Jest matcher used to verify whether a mocked function has been called at least once.
+10. `expect().toHaveBeenCalledTimes()`: A Jest matcher used to verify the exact number of times a mocked function has been called.
+11. `jest.mock()`: A Jest function used to mock dependencies, such as external APIs or libraries, and define their behavior during testing.
 
 And here are some quick guide examples and code snippets:
 
