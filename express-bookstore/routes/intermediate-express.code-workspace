@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "intermediate-express",
+			"path": "../../../intermediate-express"
+		},
+		{
+			"name": "messagely",
+			"path": "../../messagely"
+		},
+		{
+			"name": "express-bookstore",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
