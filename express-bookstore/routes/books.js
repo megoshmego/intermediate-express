@@ -1,8 +1,31 @@
-const express = require("express");
-const Book = require("../models/book");
+const express = require('express');
+const Book = require('../models/book');
+const { Validator } = require('express-json-validator-middleware');
+const validator = new Validator({allErrors: true});
+const validate = validator.validate;
+const bookSchema = require('../schemas/bookSchema.json');
 
 const router = new express.Router();
 
+// Other routes...
+
+router.post("/", validate({body: bookSchema}), async function (req, res, next) {
+  try {
+    const book = await Book.create(req.body);
+    return res.status(201).json({ book });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.put("/:isbn", validate({body: bookSchema}), async function (req, res, next) {
+  try {
+    const book = await Book.update(req.params.isbn, req.body);
+    return res.json({ book });
+  } catch (err) {
+    return next(err);
+  }
+});
 
 /** GET / => {books: [book, ...]}  */
 
@@ -20,28 +43,6 @@ router.get("/", async function (req, res, next) {
 router.get("/:id", async function (req, res, next) {
   try {
     const book = await Book.findOne(req.params.id);
-    return res.json({ book });
-  } catch (err) {
-    return next(err);
-  }
-});
-
-/** POST /   bookData => {book: newBook}  */
-
-router.post("/", async function (req, res, next) {
-  try {
-    const book = await Book.create(req.body);
-    return res.status(201).json({ book });
-  } catch (err) {
-    return next(err);
-  }
-});
-
-/** PUT /[isbn]   bookData => {book: updatedBook}  */
-
-router.put("/:isbn", async function (req, res, next) {
-  try {
-    const book = await Book.update(req.params.isbn, req.body);
     return res.json({ book });
   } catch (err) {
     return next(err);
