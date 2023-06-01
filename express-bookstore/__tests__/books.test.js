@@ -1,6 +1,8 @@
 const request = require('supertest');
 const app = require('../app'); // Import your Express app
 const Book = require('../models/book');
+const db = require('../models/db');
+
 
 // Sample book data
 const testBook = {
@@ -48,5 +50,10 @@ describe('Book Routes', () => {
     expect(res.body).toHaveProperty('message', 'Book deleted');
   });
 
+  // Assuming db is your database connection instance
+afterAll(async () => {
+    await db.$pool.end();  // this should close your database connection
+  });
+  
 });
 
